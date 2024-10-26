@@ -12,7 +12,6 @@ import org.chocodev.Fetch.IFetch;
 import org.chocodev.UploadThing.File.File;
 import org.chocodev.UploadThing.File.IFile;
 
-
 public class GetFile implements IFetch<IFile> {
     private final HttpClient Client;
     private final HttpRequest request;
@@ -30,14 +29,22 @@ public class GetFile implements IFetch<IFile> {
                 .replace("\"", "").trim();
     }
 
-    @Override
-    public File request() throws RequestException {
+    private HttpResponse<byte[]> sendRequest() throws RequestException {
         HttpResponse<byte[]> response;
         try {
             response = Client.send(request, HttpResponse.BodyHandlers.ofByteArray());
         } catch (IOException | InterruptedException e) {
             throw new RequestException(UTApiConfig.requestError);
         }
+        if (response.statusCode() != 200) {
+            throw new RequestException(UTApiConfig.fileReciveError);
+        }
+        return response;
+    }
+
+    @Override
+    public File request() throws RequestException {
+        HttpResponse<byte[]> response = sendRequest();
         byte[] responseBytes = response.body();
         String contentType = response.headers().firstValue("Content-Type").orElse("unknown");
         String contentDisposition = response.headers().firstValue("Content-Disposition").orElse("unknown");
