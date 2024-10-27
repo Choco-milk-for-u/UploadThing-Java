@@ -65,5 +65,4 @@ public class UTApiTest {
 
     }
 
-    // 404 and other status
 }
