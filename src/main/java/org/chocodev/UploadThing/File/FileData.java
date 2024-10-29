@@ -1,12 +1,12 @@
 package org.chocodev.UploadThing.File;
 
-public class File implements IFile {
+public class FileData implements IFile {
     private final byte[] bytes;
     private final String name;
     private final String contentType;
     private final String fileExtension;
 
-    public File(String name, String contentType, byte[] bytes) {
+    public FileData(String name, String contentType, byte[] bytes) {
         this.bytes = bytes;
         this.name = name;
         this.contentType = contentType;
