@@ -1,4 +1,4 @@
-package org.chocodev.Responses;
+package org.chocodev.Requests;
 
 import java.io.IOException;
 import java.net.URI;
@@ -9,7 +9,8 @@ import java.net.http.HttpResponse;
 import org.chocodev.UTApiConfig;
 import org.chocodev.Error.RequestException;
 import org.chocodev.Fetch.IFetch;
-import org.chocodev.UploadThing.File.File;
+import org.chocodev.UploadThing.Constants.Messages;
+import org.chocodev.UploadThing.File.FileData;
 import org.chocodev.UploadThing.File.IFile;
 
 public class GetFile implements IFetch<IFile> {
@@ -34,21 +35,21 @@ public class GetFile implements IFetch<IFile> {
         try {
             response = Client.send(request, HttpResponse.BodyHandlers.ofByteArray());
         } catch (IOException | InterruptedException e) {
-            throw new RequestException(UTApiConfig.requestError);
+            throw new RequestException(Messages.requestError);
         }
         if (response.statusCode() != 200) {
-            throw new RequestException(UTApiConfig.fileReciveError);
+            throw new RequestException(Messages.fileReciveError);
         }
         return response;
     }
 
     @Override
-    public File request() throws RequestException {
+    public FileData request() throws RequestException {
         HttpResponse<byte[]> response = sendRequest();
         byte[] responseBytes = response.body();
         String contentType = response.headers().firstValue("Content-Type").orElse("unknown");
         String contentDisposition = response.headers().firstValue("Content-Disposition").orElse("unknown");
-        return new File(extractFileName(contentDisposition), contentType, responseBytes);
+        return new FileData(extractFileName(contentDisposition), contentType, responseBytes);
 
     }
 
