@@ -1,6 +1,5 @@
 package org.chocodev.UploadThing.Customizer.DeleteCustomizer;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 import org.chocodev.Error.ApiException;
@@ -24,10 +23,9 @@ public class DeleteOptions {
         }
     }
 
-    private ArrayList<String> returnFiles(FileKeys Files) {
-        ArrayList<String> filesStrings = new ArrayList<String>();
+    private String returnFiles(FileKeys Files) {
         FileString FileString = new FileString(Files);
-        filesStrings = Files.getIsBasicData() ? FileString.getFromBasic() : FileString.getFromFiles(keyType);
+        String filesStrings = Files.getIsBasicData() ? FileString.getFromBasic() : FileString.getFromFiles(keyType);
         return filesStrings;
     };
 
