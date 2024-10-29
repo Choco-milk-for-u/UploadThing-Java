@@ -4,12 +4,10 @@ public class Messages {
     private Messages() {
 
     }
-
-    public final static String apiFieldError = "";
-    public final static String operationError = "";
-    public final static String apiException = "";
-    public final static String apiFileKeysException = "";
-    public final static String apiBuilderException = "";
-    public final static String requestError = "";
-    public final static String fileReciveError = "";
+    public static final String mapperErrorMessage = "";
+    public static final String customizerErrorMessage = "";
+    public static final String fieldErrorMessage = "";
+    public static String requestErrorMessage(String msg){
+        return msg + "";
+    }
 }
