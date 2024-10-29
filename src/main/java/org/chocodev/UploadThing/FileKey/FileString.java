@@ -6,27 +6,30 @@ import org.chocodev.UploadThing.Constants.KeyType;
 import org.chocodev.UploadThing.File.IUploadThingFile;
 
 public class FileString {
-    private final FileKeys FileKeys;
+    private final ArrayList<String> fileKeys;
+    private final ArrayList<String> customIds = new ArrayList<String>();
 
     public FileString(FileKeys FileKeys) {
-        this.FileKeys = FileKeys;
-    }
-
-    public String getFromBasic() {
-        return FileKeys.files.size() > 1 ? FileKeys.files.toString() : FileKeys.files.get(0);
-    }
-
-    public String getFromFiles(KeyType keyType) {
-        ArrayList<String> toStrings = new ArrayList<String>();
-        for (IUploadThingFile File : FileKeys.UploadThingFiles) {
-            if (keyType.equals(KeyType.CUSTOM_ID)) {
-                toStrings.add(File.getCustomId());
-            }
-            if (keyType.equals(KeyType.FILE_KEY)) {
-                toStrings.add(File.getKey());
-            }
+        if (FileKeys.getIsBasicData()) {
+            fileKeys = FileKeys.files;
+            return;
         }
-        return toStrings.size() > 1 ? toStrings.toString() : toStrings.get(0);
+        fileKeys = new ArrayList<String>();
+        for (IUploadThingFile File : FileKeys.UploadThingFiles) {
+            fileKeys.add(File.getKey());
+            customIds.add(File.getCustomId());
+        }
+    }
+
+    public ArrayList<String> getFile() {
+        return fileKeys;
+    }
+
+    public ArrayList<String> getFile(KeyType keyType) {
+        if (keyType.equals(KeyType.CUSTOM_ID)) {
+            return customIds;
+        }
+        return getFile();
     }
 
 }

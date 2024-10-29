@@ -2,6 +2,9 @@ package org.chocodev.UploadThing.FileKey;
 
 import java.util.ArrayList;
 
+import org.chocodev.ParametersValidator;
+import org.chocodev.Error.SDK.FieldException;
+import org.chocodev.UploadThing.Constants.Messages;
 import org.chocodev.UploadThing.File.IUploadThingFile;
 
 public class FileKeys {
@@ -21,6 +24,7 @@ public class FileKeys {
     }
 
     public FileKeys(IUploadThingFile... Files) {
+        ParametersValidator.validate(new FieldException(Messages.fieldErrorMessage), files);
         isBasic = false;
         this.UploadThingFiles = Files;
     }

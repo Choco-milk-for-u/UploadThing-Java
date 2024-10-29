@@ -1,11 +1,16 @@
 package org.chocodev.UploadThing.Status;
 
-public class BasicStatus implements IStatus {
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-    @Override
-    public boolean getStatus() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getStatus'");
+public class BasicStatus implements IStatus {
+    private boolean success;
+    @JsonProperty("success")
+    public boolean isSuccess() {
+        return success;
     }
-    
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
 }

@@ -1,13 +1,12 @@
 package org.chocodev.Requests;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 import org.chocodev.UTApiConfig;
-import org.chocodev.Error.RequestException;
+import org.chocodev.Error.UTApi.RequestException;
 import org.chocodev.Fetch.IFetch;
 import org.chocodev.UploadThing.Constants.Messages;
 import org.chocodev.UploadThing.File.FileData;
@@ -31,16 +30,21 @@ public class GetFile implements IFetch<IFile> {
     }
 
     private HttpResponse<byte[]> sendRequest() throws RequestException {
-        HttpResponse<byte[]> response;
         try {
-            response = Client.send(request, HttpResponse.BodyHandlers.ofByteArray());
-        } catch (IOException | InterruptedException e) {
-            throw new RequestException(Messages.requestError);
+            HttpResponse<byte[]> response = Client.send(request, HttpResponse.BodyHandlers.ofByteArray());
+            handleResponseStatus(response);
+            return response;
+        } catch (RequestException e) {
+            throw new RequestException(e.getMessage(), e.getStatusCode());
+        } catch (Exception e) {
+            throw new RequestException(Messages.requestErrorMessage(e.getMessage()));
         }
+    }
+
+    private void handleResponseStatus(HttpResponse<byte[]> response) throws RequestException {
         if (response.statusCode() != 200) {
-            throw new RequestException(Messages.fileReciveError);
+            throw new RequestException(response.toString(), response.statusCode());
         }
-        return response;
     }
 
     @Override

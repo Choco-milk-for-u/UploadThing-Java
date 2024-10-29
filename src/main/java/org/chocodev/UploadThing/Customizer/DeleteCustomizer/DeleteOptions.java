@@ -1,8 +1,10 @@
 package org.chocodev.UploadThing.Customizer.DeleteCustomizer;
 
 import java.util.Map;
+import java.util.ArrayList;
 
-import org.chocodev.Error.ApiException;
+import org.chocodev.Error.SDK.CustomizerException;
+import org.chocodev.Error.SDK.MapperException;
 import org.chocodev.Requests.RequestMapper;
 import org.chocodev.UploadThing.Constants.KeyType;
 import org.chocodev.UploadThing.Constants.Messages;
@@ -19,13 +21,13 @@ public class DeleteOptions {
         try {
             return RequestMapper.objectMapper.writeValueAsString(Map.of(keyType.getValue(), returnFiles(Files)));
         } catch (JsonProcessingException e) {
-            throw new ApiException(Messages.apiFileKeysException);
+            throw new MapperException(Messages.mapperErrorMessage);
         }
     }
 
-    private String returnFiles(FileKeys Files) {
+    private ArrayList<String> returnFiles(FileKeys Files) {
         FileString FileString = new FileString(Files);
-        String filesStrings = Files.getIsBasicData() ? FileString.getFromBasic() : FileString.getFromFiles(keyType);
+        ArrayList<String> filesStrings = Files.getIsBasicData() ? FileString.getFile() : FileString.getFile(keyType);
         return filesStrings;
     };
 
@@ -36,7 +38,7 @@ public class DeleteOptions {
         private DeleteOptions Options;
 
         @Override
-        public ICustomizer<DeleteOptions> builder() {
+        public Customizer builder() {
             Options = new DeleteOptions();
             return this;
         }
@@ -44,7 +46,7 @@ public class DeleteOptions {
         @Override
         public DeleteOptions build() {
             if(Options == null){
-                throw new ApiException(Messages.apiBuilderException);
+                throw new CustomizerException();
             }
             return Options;
         }
@@ -57,7 +59,6 @@ public class DeleteOptions {
         @Override
         public DeleteOptions withDefault() {
             return new DeleteOptions();
-
         }
     }
 }

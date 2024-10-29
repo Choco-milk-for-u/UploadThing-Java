@@ -2,26 +2,20 @@ package org.chocodev;
 
 import java.util.Set;
 
-import org.chocodev.Error.UTApiException;
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
 
 public class ParametersValidator {
-    private final Validator validator;
+    private static final Validator validator = Validation.byDefaultProvider()
+            .configure()
+            .messageInterpolator(new ParameterMessageInterpolator())
+            .buildValidatorFactory().getValidator();
 
-    public ParametersValidator() {
-        ValidatorFactory factory = Validation.byDefaultProvider()
-                .configure()
-                .messageInterpolator(new ParameterMessageInterpolator())
-                .buildValidatorFactory();
-        validator = factory.getValidator();
-    }
-
-    public <TException extends UTApiException> void validate(TException Exception, Object param) throws TException {
+    public static <TException extends Exception> void validate(TException Exception, Object param)
+            throws TException {
         if (param == null) {
             throw Exception;
         }
@@ -35,7 +29,15 @@ public class ParametersValidator {
         }
     }
 
-    public <TException extends UTApiException> void validate(TException Exception, Object... params) throws TException {
+    public static <TException extends Exception> void validate(TException Exception, Object... params)
+            throws TException {
+        for (Object param : params) {
+            validate(Exception, param);
+        }
+    }
+
+    public static <TException extends Exception> void validateMany(TException Exception, Object[] params)
+            throws TException {
         for (Object param : params) {
             validate(Exception, param);
         }
