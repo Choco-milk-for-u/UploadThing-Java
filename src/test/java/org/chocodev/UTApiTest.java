@@ -72,7 +72,7 @@ public class UTApiTest {
     @Test
     public void deleteFile() throws RequestException {
         DeleteFile Request = mock(DeleteFile.class);
-        DeleteOptions Options = new DeleteOptions.Customizer().withDefault();
+        DeleteOptions Options = DeleteOptions.builder().withDefault();
         DeleteStatus Status = new DeleteStatus();
         FileKeys File = new FileKeys("filekey");
         Status.setDeletedCount(1);

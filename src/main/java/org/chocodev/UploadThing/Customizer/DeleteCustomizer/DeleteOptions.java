@@ -25,6 +25,10 @@ public class DeleteOptions {
         }
     }
 
+    public static Customizer builder() {
+        return new Customizer().builder();
+    }
+
     private ArrayList<String> returnFiles(FileKeys Files) {
         FileString FileString = new FileString(Files);
         ArrayList<String> filesStrings = Files.getIsBasicData() ? FileString.getFile() : FileString.getFile(keyType);
@@ -37,6 +41,10 @@ public class DeleteOptions {
     public static class Customizer implements ICustomizer<DeleteOptions> {
         private DeleteOptions Options;
 
+        private Customizer() {
+
+        }
+
         @Override
         public Customizer builder() {
             Options = new DeleteOptions();
@@ -45,7 +53,7 @@ public class DeleteOptions {
 
         @Override
         public DeleteOptions build() {
-            if(Options == null){
+            if (Options == null) {
                 throw new CustomizerException();
             }
             return Options;

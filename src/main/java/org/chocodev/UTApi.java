@@ -43,6 +43,6 @@ public class UTApi {
 
     public <TStatus extends IStatus> TStatus deleteFile(FileKeys File) throws RequestException {
         ParametersValidator.validate(new FieldException(Messages.fieldErrorMessage), File);
-        return Fetcher.<TStatus>deleteFile(File, new DeleteOptions.Customizer().withDefault()).request();
+        return Fetcher.<TStatus>deleteFile(File, DeleteOptions.builder().withDefault()).request();
     }
 }
