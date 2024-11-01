@@ -39,6 +39,7 @@ public class DeleteService implements IService<DeleteResponse> {
         try {
             HttpResponse<String> response = Client.send(request, HttpResponse.BodyHandlers.ofString());
             DeleteResponse DeleteResponse = Mapper.readValue(response.body(), DeleteResponse.class);
+
             return new UTResponse<DeleteResponse>(response, DeleteResponse);
         } catch (IOException | InterruptedException e) {
             return new UTResponse<DeleteResponse>(e);

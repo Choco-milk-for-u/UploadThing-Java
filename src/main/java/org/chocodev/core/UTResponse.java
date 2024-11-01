@@ -3,6 +3,10 @@ package org.chocodev.core;
 import java.net.http.HttpResponse;
 import java.util.function.Function;
 
+import org.chocodev.internal.Exceptions.SDK.BadApiCallException;
+import org.chocodev.util.ParametersValidator;
+import org.chocodev.util.Constants.Messages;
+
 public class UTResponse<TRes> {
     private boolean isError = false;
     private boolean isOk = false;
@@ -11,12 +15,14 @@ public class UTResponse<TRes> {
     private Exception exception = null;
 
     public UTResponse(HttpResponse<String> response, TRes Body) {
+        ParametersValidator.validate(new BadApiCallException(Messages.badUTResponseConstructor), Body, response);
         this.status = response.statusCode();
         this.isOk = response.statusCode() == 200;
         this.body = Body;
     }
 
     public UTResponse(Exception e) {
+        ParametersValidator.validate(new BadApiCallException(Messages.badUTResponseConstructor), e);
         this.isError = true;
         this.exception = e;
     }
