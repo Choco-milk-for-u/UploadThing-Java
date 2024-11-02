@@ -45,15 +45,15 @@ public class UTApiTest {
         DeleteResponse.setDeletedCount(1);
         DeleteOptions Options = DeleteOptions.withDefault();
         DeleteResponse.setSuccess(true);
-        FileKey FileKey = new FileKey("fileKey");
+        FileKey Key = FileKey.builder().setFileKey("s").build();
         HttpResponse<String> response = mock(HttpResponse.class);
         UTResponse<DeleteResponse> Responses = new UTResponse<DeleteResponse>(response, DeleteResponse);
         // when
         when(response.statusCode()).thenReturn(200);
-        when(serviceFactory.getDeleteService(FileKey, Options)).thenReturn(deleteService);
+        when(serviceFactory.getDeleteService(Key, Options)).thenReturn(deleteService);
         when(deleteService.request(any())).thenReturn(Responses);
         // then
-        UTResponse<DeleteResponse> ResultSecond = utApi.deleteFiles(FileKey, Options);
+        UTResponse<DeleteResponse> ResultSecond = utApi.deleteFiles(Key, Options);
         assertEquals(ResultSecond, Responses);
     }
 
@@ -64,6 +64,6 @@ public class UTApiTest {
 
     @Test
     public void deleteFilesWithoutOption() {
-        assertThrows(FieldException.class, () -> utApi.deleteFiles(new FileKey("key"), null));
+        assertThrows(FieldException.class, () -> utApi.deleteFiles(FileKey.builder().setFileKey("s").build(), null));
     }
 }
