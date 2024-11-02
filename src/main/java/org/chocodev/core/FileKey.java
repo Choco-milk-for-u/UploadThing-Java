@@ -2,6 +2,7 @@ package org.chocodev.core;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.chocodev.core.File.IUTFile;
 import org.chocodev.internal.Exceptions.SDK.BadApiCallException;
@@ -10,46 +11,73 @@ import org.chocodev.util.Constants.KeyType;
 import org.chocodev.util.Constants.Messages;
 
 public class FileKey {
-    private final ArrayList<IUTFile> fileObjects;
-    private final ArrayList<String> fileBasics;
+    private final ArrayList<IUTFile> fileObjects = new ArrayList<IUTFile>();
+    private final ArrayList<String> fileBasics = new ArrayList<String>();
 
-    public FileKey(String... fileKey) {
-        this.fileBasics = new ArrayList<String>();
-        this.fileObjects = new ArrayList<IUTFile>();
+    private FileKey() {
 
-        for (String key : fileKey) {
-            ParametersValidator.validate(new BadApiCallException(Messages.fieldErrorMessage), key);
-            fileBasics.add(key);
-        }
-    }
-    public FileKey(IUTFile... fileKey) {
-        this.fileBasics = new ArrayList<String>();
-        this.fileObjects = new ArrayList<IUTFile>(Arrays.asList(fileKey));
-        for (IUTFile file : fileKey) {
-            ParametersValidator.validate(new BadApiCallException(Messages.fieldErrorMessage), file);
-            fileObjects.add(file);
-        }
     }
 
-    public ArrayList<String> getFileKey() {
+    public List<String> getFileKey() {
         return getFileKey(KeyType.FILE_KEY);
     }
 
-    public ArrayList<String> getFileKey(KeyType type) {
-        ArrayList<String> keys = new ArrayList<String>(fileBasics);
+    public List<String> getFileKey(KeyType type) {
         boolean isCustomId = type.equals(KeyType.CUSTOM_ID);
-        return filterOnNull(keys, isCustomId);
+        return filterOnNull(isCustomId);
     }
 
-    private ArrayList<String> filterOnNull(ArrayList<String> keys, boolean isCustomId) {
-        for (IUTFile File : fileObjects) {
-            String key = File.getFileKey();
-            if (isCustomId) {
-                key = File.getCustomId();
-            }
-            ParametersValidator.validate(new BadApiCallException(Messages.emptyKeyErrorMessage), key);
-            keys.add(key);
-        }
+    private List<String> filterOnNull(boolean isCustomId) {
+        List<String> keys = new ArrayList<>();
+        processFileBasics(keys);
+        processFileObjects(keys, isCustomId);
         return keys;
+    }
+
+    private void processFileBasics(List<String> keys) {
+        for (String file : fileBasics) {
+            addValidatedKey(keys, file);
+        }
+    }
+
+    private void processFileObjects(List<String> keys, boolean isCustomId) {
+        for (IUTFile file : fileObjects) {
+            String key = isCustomId ? file.getCustomId() : file.getFileKey();
+            addValidatedKey(keys, key);
+        }
+    }
+
+    private void addValidatedKey(List<String> keys, String key) {
+        ParametersValidator.validate(new BadApiCallException(Messages.emptyKeyErrorMessage), key);
+        keys.add(key);
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private final FileKey Key;
+
+        public Builder() {
+            this.Key = new FileKey();
+        }
+
+        public Builder setFileKey(String... fileKey) {
+            Key.fileBasics.addAll(Arrays.asList(fileKey));
+            return this;
+        }
+
+        public Builder setFileKey(IUTFile... FileKey) {
+            Key.fileObjects.addAll(Arrays.asList(FileKey));
+            return this;
+        }
+
+        public FileKey build() {
+            if (Key.fileBasics.isEmpty() && Key.fileObjects.isEmpty()) {
+                throw new BadApiCallException(Messages.badBuilderBuildErrorMessage);
+            }
+            return Key;
+        }
     }
 }
