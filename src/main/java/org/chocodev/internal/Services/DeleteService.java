@@ -1,10 +1,6 @@
 package org.chocodev.internal.Services;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 
 import org.chocodev.core.FileKey;
 import org.chocodev.core.UTResponse;
@@ -13,35 +9,40 @@ import org.chocodev.core.Responses.DeleteResponse;
 import org.chocodev.internal.UTApiConfig;
 import org.chocodev.util.Mapper;
 
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class DeleteService implements IService<DeleteResponse> {
-    private final String token;
+    private final String apiKey;
     private final FileKey File;
     private final DeleteOptions Options;
 
     public DeleteService(FileKey File, String utApiToken, DeleteOptions Options) {
-        this.token = utApiToken;
+        this.apiKey = utApiToken;
         this.File = File;
         this.Options = Options;
     }
 
     @Override
-    public UTResponse<DeleteResponse> request(HttpClient Client) {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(UTApiConfig.deleteFileUrl))
-                .header("Content-Type", "application/json")
-                .header("X-Uploadthing-Api-Key", token)
-                .method("POST", HttpRequest.BodyPublishers.ofString(Options.getRequestBody(File)))
+    public UTResponse<DeleteResponse> request(OkHttpClient Client) {
+        Request request = new Request.Builder().url(UTApiConfig.deleteFileUrl)
+                .header("X-Uploadthing-Api-Key", apiKey)
+                .post(RequestBody.create(Options.getRequestBody(File),
+                        MediaType.parse("application/json; charset=utf-8")))
                 .build();
         return sendRequest(request, Client);
     }
 
-    private UTResponse<DeleteResponse> sendRequest(HttpRequest request, HttpClient Client) {
+    private UTResponse<DeleteResponse> sendRequest(Request request, OkHttpClient Client) {
         try {
-            HttpResponse<String> response = Client.send(request, HttpResponse.BodyHandlers.ofString());
-            DeleteResponse DeleteResponse = Mapper.readValue(response.body(), DeleteResponse.class);
+            Response response = Client.newCall(request).execute();
+            DeleteResponse DeleteResponse = Mapper.readValue(response.body().string(), DeleteResponse.class);
 
             return new UTResponse<DeleteResponse>(response, DeleteResponse);
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             return new UTResponse<DeleteResponse>(e);
         }
     }

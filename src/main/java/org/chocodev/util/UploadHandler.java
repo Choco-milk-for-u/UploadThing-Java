@@ -1,45 +1,72 @@
 package org.chocodev.util;
 
+import java.io.Serializable;
 import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 
 import org.chocodev.core.FileKey;
+import org.chocodev.core.UTFile;
 import org.chocodev.core.Exceptions.SDK.GenerateUrlException;
 import org.chocodev.internal.UTApiConfig;
-import org.chocodev.util.Decoder.DecodedToken;
-import org.chocodev.util.Decoder.UploadThingTokenDecoder;
 import org.sqids.Sqids;
 
 public class UploadHandler {
-    private String regionAlias = "sea1";
+    private final String regionAlias;
     private final String apiKey;
     private final String appId;
     private final HmacService HmacService = new HmacService();
-    private final UploadThingTokenDecoder decoder = new UploadThingTokenDecoder();
+    private final HashService HashService = new HashService();
 
-    public UploadHandler(String token) {
-        DecodedToken DecodedToken = decoder.decodedToken(token);
-        this.apiKey = DecodedToken.getAppKey();
-        this.appId = DecodedToken.getAppId();
-        this.regionAlias = DecodedToken.getAppRegion()[0];
+    public UploadHandler(String apiKey, String appId, String[] regionAlias) {
+        this.apiKey = apiKey;
+        this.appId = appId;
+        this.regionAlias = regionAlias[0];
     }
 
-    public FileKey generateKey(String fileSeed) {
-        Sqids sqids = Sqids.builder()
+    private String encodeAppId(String alphabet) {
+        Sqids appSqids = Sqids
+                .builder()
                 .minLength(12)
+                .alphabet(alphabet)
                 .build();
-        Long normalized = Math.abs(Long.valueOf(appId.hashCode()));
-        String encodedApp = sqids.encode(Arrays.asList(normalized));
-        String encodedFileKey = Base64.getUrlEncoder().encodeToString(fileSeed.getBytes());
-        return FileKey.builder().setFileKey(encodedApp + encodedFileKey).build();
+        Long normalize = Math.abs(Long.valueOf(HashService.stringHash(appId)));
+        String encodedApp = appSqids.encode(Arrays.asList(normalize));
+        return encodedApp;
+    }
+
+    private String encodeFileSeed(String alphabet, UTFile File) {
+        List<Serializable> hashParts = List.of(
+                File.getName(),
+                File.getFileSize(),
+                File.getType(),
+                File.getLastModified(),
+                System.currentTimeMillis());
+        String json = Mapper.writeValueAsString(hashParts);
+        Sqids fileSqids = Sqids.builder().minLength(36).alphabet(alphabet).build();
+        Long normalize = Math.abs(Long.valueOf(HashService.stringHash(json)));
+        String encodedFileKey = fileSqids.encode(Arrays.asList(normalize));
+        return encodedFileKey;
+    }
+
+    public FileKey generateKey(UTFile File) {
+        String alphabet = HashService.shuffle(Sqids.Builder.DEFAULT_ALPHABET, appId);
+        return FileKey.builder().setFileKey(encodeAppId(alphabet) + encodeFileSeed(alphabet, File)).build();
     }
 
     public URI createSignedUploadUrl(String fileKey, Map<String, String> queryParams) {
-        String baseUrl = String.format(UTApiConfig.uploadFileUrl, regionAlias, fileKey);
         try {
-            return HmacService.buildSignedUrl(baseUrl, queryParams, apiKey);
+            String baseUrl = String.format(UTApiConfig.uploadFileUrl, regionAlias, fileKey);
+            StringBuilder queryString = HmacService.applyParameters(queryParams);
+            String combineQuery = baseUrl + (queryString.length() > 0 ? "?" + queryString.toString() : "");
+            URI preSignedUri = new URI(combineQuery);
+            String signature = HmacService.signPayload(preSignedUri.toString(), apiKey);
+            String toURL = URLEncoder.encode(signature, StandardCharsets.UTF_8);
+            String signedUrl = preSignedUri.toString() + "&signature=" + toURL;
+            return new URI(signedUrl);
         } catch (Exception e) {
             throw new GenerateUrlException();
         }

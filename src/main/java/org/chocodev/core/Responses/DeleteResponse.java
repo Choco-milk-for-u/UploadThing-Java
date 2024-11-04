@@ -3,14 +3,10 @@ package org.chocodev.core.Responses;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class DeleteResponse extends BasicResponse {
+    @JsonProperty("deletedCount")
     private int deletedCount;
     
-    @JsonProperty("deletedCount")
     public int getDeletedCount() {
         return deletedCount;
-    }
-
-    public void setDeletedCount(int deletedCount) {
-        this.deletedCount = deletedCount;
     }
 }

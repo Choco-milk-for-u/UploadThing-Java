@@ -1,6 +1,5 @@
 package org.chocodev.util;
 
-import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -11,20 +10,8 @@ import javax.crypto.spec.SecretKeySpec;
 public class HmacService {
     private final String ALG = "HmacSHA256";
 
-    public URI buildSignedUrl(String baseUrl, Map<String, String> queryParams, String apiKey)
-            throws Exception {
 
-        StringBuilder queryString = applyParameters(queryParams);
-        String preSignedUrl = baseUrl + (queryString.length() > 0 ? "?" + queryString.toString() : "");
-        URI preSignedUri = new URI(preSignedUrl);
-        String signature = signPayload(preSignedUri.toString(), apiKey);
-        String signedUrl = preSignedUri.toString() + "&signature="
-                + URLEncoder.encode(signature, StandardCharsets.UTF_8);
-
-        return new URI(signedUrl);
-    }
-
-    private StringBuilder applyParameters(Map<String, String> queryParams) {
+    public StringBuilder applyParameters(Map<String, String> queryParams) {
         StringBuilder queryString = new StringBuilder();
 
         for (Map.Entry<String, String> entry : queryParams.entrySet()) {
@@ -49,7 +36,7 @@ public class HmacService {
         return hexString.toString();
     }
 
-    private String signPayload(String payload, String secret) throws Exception {
+    public String signPayload(String payload, String secret) throws Exception {
         Mac mac = Mac.getInstance(ALG);
         SecretKeySpec secretKeySpec = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), ALG);
         mac.init(secretKeySpec);

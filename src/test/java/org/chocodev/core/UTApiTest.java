@@ -42,7 +42,7 @@ public class UTApiTest {
     @Test
     public void deleteFiles() {
         DeleteResponse DeleteResponse = new DeleteResponse();
-        DeleteResponse.setDeletedCount(1);
+        // DeleteResponse.setDeletedCount(1);
         DeleteOptions Options = DeleteOptions.withDefault();
         DeleteResponse.setSuccess(true);
         FileKey Key = FileKey.builder().setFileKey("s").build();
