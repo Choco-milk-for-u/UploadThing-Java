@@ -1,12 +1,12 @@
 package org.chocodev.util.Constants;
 
-public enum ContentDisposition {
-    PUBLIC("attachment"),
-    PRIVATE("inline");
+public enum Acl {
+    PUBLIC("public-read"),
+    PRIVATE("private");
 
     private final String value;
 
-    ContentDisposition(String value) {
+    Acl(String value) {
         this.value = value;
     }
 

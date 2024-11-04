@@ -9,9 +9,9 @@ import static org.mockito.Mockito.when;
 import java.lang.reflect.Field;
 import java.net.http.HttpResponse;
 
+import org.chocodev.core.Exceptions.SDK.FieldException;
 import org.chocodev.core.Options.DeleteOption.DeleteOptions;
 import org.chocodev.core.Responses.DeleteResponse;
-import org.chocodev.internal.Exceptions.SDK.FieldException;
 import org.chocodev.internal.Services.DeleteService;
 import org.chocodev.internal.Services.ServiceFactory;
 import org.junit.jupiter.api.BeforeEach;

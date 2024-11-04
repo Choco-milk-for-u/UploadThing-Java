@@ -1,6 +1,6 @@
-package org.chocodev.internal.Exceptions.SDK;
+package org.chocodev.core.Exceptions.SDK;
 
-import org.chocodev.util.Constants.Messages;
+import org.chocodev.internal.Messages;
 
 public class CustomizerException extends SDKException {
     public CustomizerException(){

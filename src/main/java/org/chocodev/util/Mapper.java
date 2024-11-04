@@ -1,7 +1,7 @@
 package org.chocodev.util;
 
-import org.chocodev.internal.Exceptions.SDK.MapperException;
-import org.chocodev.util.Constants.Messages;
+import org.chocodev.core.Exceptions.SDK.MapperException;
+import org.chocodev.internal.Messages;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

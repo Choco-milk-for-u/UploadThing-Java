@@ -3,9 +3,9 @@ package org.chocodev.core;
 import java.net.http.HttpResponse;
 import java.util.function.Function;
 
-import org.chocodev.internal.Exceptions.SDK.BadApiCallException;
+import org.chocodev.core.Exceptions.SDK.BadApiCallException;
+import org.chocodev.internal.Messages;
 import org.chocodev.util.ParametersValidator;
-import org.chocodev.util.Constants.Messages;
 
 public class UTResponse<TRes> {
     private boolean isError = false;

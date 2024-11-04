@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.chocodev.core.Exceptions.SDK.BadApiCallException;
 import org.chocodev.core.File.IUTFile;
-import org.chocodev.internal.Exceptions.SDK.BadApiCallException;
+import org.chocodev.internal.Messages;
 import org.chocodev.util.ParametersValidator;
 import org.chocodev.util.Constants.KeyType;
-import org.chocodev.util.Constants.Messages;
 
 public class FileKey {
     private final ArrayList<IUTFile> fileObjects = new ArrayList<IUTFile>();

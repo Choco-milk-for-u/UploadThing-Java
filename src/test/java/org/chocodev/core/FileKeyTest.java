@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import org.chocodev.core.Exceptions.SDK.BadApiCallException;
 import org.chocodev.core.File.IUTFile;
-import org.chocodev.internal.Exceptions.SDK.BadApiCallException;
 import org.chocodev.util.Constants.KeyType;
 import org.junit.jupiter.api.Test;
 

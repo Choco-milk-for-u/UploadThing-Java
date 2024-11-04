@@ -18,7 +18,7 @@ import java.util.Optional;
 
 import javax.net.ssl.SSLSession;
 
-import org.chocodev.internal.Exceptions.SDK.BadApiCallException;
+import org.chocodev.core.Exceptions.SDK.BadApiCallException;
 import org.junit.jupiter.api.Test;
 
 public class UTResponseTest {
