@@ -8,6 +8,8 @@ import java.util.Map;
 import org.chocodev.core.FileKey;
 import org.chocodev.core.Exceptions.SDK.GenerateUrlException;
 import org.chocodev.internal.UTApiConfig;
+import org.chocodev.util.Decoder.DecodedToken;
+import org.chocodev.util.Decoder.UploadThingTokenDecoder;
 import org.sqids.Sqids;
 
 public class UploadHandler {
@@ -15,15 +17,13 @@ public class UploadHandler {
     private final String apiKey;
     private final String appId;
     private final HmacService HmacService = new HmacService();
+    private final UploadThingTokenDecoder decoder = new UploadThingTokenDecoder();
 
-    public UploadHandler(String regionAlias, String apiKey, String appId) {
-        this(apiKey, appId);
-        this.regionAlias = regionAlias;
-    }
-
-    public UploadHandler(String apiKey, String appId) {
-        this.apiKey = apiKey;
-        this.appId = appId;
+    public UploadHandler(String token) {
+        DecodedToken DecodedToken = decoder.decodedToken(token);
+        this.apiKey = DecodedToken.getAppKey();
+        this.appId = DecodedToken.getAppId();
+        this.regionAlias = DecodedToken.getAppRegion()[0];
     }
 
     public FileKey generateKey(String fileSeed) {
