@@ -8,6 +8,7 @@ import org.chocodev.core.FileKey;
 import org.chocodev.core.UTFile;
 import org.chocodev.core.UTResponse;
 import org.chocodev.core.UploadParameters;
+import org.chocodev.core.Responses.UploadPerRequest;
 import org.chocodev.core.Responses.UploadResponse;
 import org.chocodev.util.Mapper;
 import org.chocodev.util.UploadHandler;
@@ -18,7 +19,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class UploadService<TServerData> implements IService<ArrayList<UTResponse<UploadResponse<TServerData>>>> {
+public class UploadService<TServerData> implements IService<UploadResponse<TServerData>> {
     private final UTFile[] File;
     private final UploadHandler UploadHandler;
     private final UploadParameters Parameters;
@@ -30,21 +31,7 @@ public class UploadService<TServerData> implements IService<ArrayList<UTResponse
         this.UploadHandler = UploadHandler;
     }
 
-    @Override
-    public UTResponse<ArrayList<UTResponse<UploadResponse<TServerData>>>> request(OkHttpClient Client) {
-        ArrayList<UTResponse<UploadResponse<TServerData>>> responses = new ArrayList<>();
-        for (UTFile SingleFile : File) {
-            UTResponse<UploadResponse<TServerData>> Response = sendUpload(SingleFile, Client);
-            if (Response.isOk()) {
-                Response.getBody().setUploadCount(count);
-                this.count += 1;
-            }
-            responses.add(Response);
-        }
-        return new UTResponse<ArrayList<UTResponse<UploadResponse<TServerData>>>>(true, responses);
-    }
-
-    private UTResponse<UploadResponse<TServerData>> sendUpload(UTFile File, OkHttpClient Client) {
+    private UTResponse<UploadPerRequest<TServerData>> sendUpload(UTFile File, OkHttpClient Client) {
         FileKey FileKey = UploadHandler.generateKey(File);
         URI URI = UploadHandler.createSignedUploadUrl(FileKey.getFileKey().get(0), Parameters.getQuery());
         RequestBody requestBody = new MultipartBody.Builder()
@@ -58,15 +45,29 @@ public class UploadService<TServerData> implements IService<ArrayList<UTResponse
         return fetch(request, Client);
     }
 
-    private UTResponse<UploadResponse<TServerData>> fetch(Request request, OkHttpClient Client) {
+    private UTResponse<UploadPerRequest<TServerData>> fetch(Request request, OkHttpClient Client) {
         try {
-            System.out.println(request);
             Response response = Client.newCall(request).execute();
-            UploadResponse<TServerData> Upload = Mapper.readValue(response.body().string(), UploadResponse.class);
-            return new UTResponse<UploadResponse<TServerData>>(response, Upload);
+            UploadPerRequest<TServerData> Upload = Mapper.readValue(response.body().string(), UploadPerRequest.class);
+            response.close();
+            return new UTResponse<UploadPerRequest<TServerData>>(response, Upload);
         } catch (IOException e) {
-            return new UTResponse<UploadResponse<TServerData>>(e);
+            return new UTResponse<UploadPerRequest<TServerData>>(e);
         }
+    }
+
+    @Override
+    public UTResponse<UploadResponse<TServerData>> request(OkHttpClient Client) {
+        ArrayList<UTResponse<UploadPerRequest<TServerData>>> responses = new ArrayList<>();
+        for (UTFile SingleFile : File) {
+            UTResponse<UploadPerRequest<TServerData>> Response = sendUpload(SingleFile, Client);
+            if (Response.isOk()) {
+                this.count += 1;
+            }
+            responses.add(Response);
+        }
+        UploadResponse<TServerData> UploadResponse = new UploadResponse<TServerData>(responses, count);
+        return new UTResponse<UploadResponse<TServerData>>(true, UploadResponse);
     }
 
 }

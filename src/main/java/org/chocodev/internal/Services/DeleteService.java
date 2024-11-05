@@ -40,7 +40,7 @@ public class DeleteService implements IService<DeleteResponse> {
         try {
             Response response = Client.newCall(request).execute();
             DeleteResponse DeleteResponse = Mapper.readValue(response.body().string(), DeleteResponse.class);
-
+            response.close();
             return new UTResponse<DeleteResponse>(response, DeleteResponse);
         } catch (IOException e) {
             return new UTResponse<DeleteResponse>(e);

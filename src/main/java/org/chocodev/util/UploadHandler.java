@@ -2,6 +2,7 @@ package org.chocodev.util;
 
 import java.io.Serializable;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -10,8 +11,10 @@ import java.util.Map;
 
 import org.chocodev.core.FileKey;
 import org.chocodev.core.UTFile;
+import org.chocodev.core.Exceptions.SDK.FieldException;
 import org.chocodev.core.Exceptions.SDK.GenerateUrlException;
-import org.chocodev.internal.UTApiConfig;
+import org.chocodev.internal.Messages;
+import org.chocodev.internal.ParameterService;
 import org.sqids.Sqids;
 
 public class UploadHandler {
@@ -20,6 +23,7 @@ public class UploadHandler {
     private final String appId;
     private final HmacService HmacService = new HmacService();
     private final HashService HashService = new HashService();
+    private final ParameterService ParameterService = new ParameterService();
 
     public UploadHandler(String apiKey, String appId, String[] regionAlias) {
         this.apiKey = apiKey;
@@ -53,21 +57,20 @@ public class UploadHandler {
     }
 
     public FileKey generateKey(UTFile File) {
+        ParametersValidator.validate(new FieldException(Messages.FIELD_ERROR_MESSAGE), File);
         String alphabet = HashService.shuffle(Sqids.Builder.DEFAULT_ALPHABET, appId);
         return FileKey.builder().setFileKey(encodeAppId(alphabet) + encodeFileSeed(alphabet, File)).build();
     }
 
     public URI createSignedUploadUrl(String fileKey, Map<String, String> queryParams) {
         try {
-            String baseUrl = String.format(UTApiConfig.uploadFileUrl, regionAlias, fileKey);
-            StringBuilder queryString = HmacService.applyParameters(queryParams);
-            String combineQuery = baseUrl + (queryString.length() > 0 ? "?" + queryString.toString() : "");
-            URI preSignedUri = new URI(combineQuery);
+            ParametersValidator.validate(new FieldException(Messages.FIELD_ERROR_MESSAGE), fileKey, queryParams);
+            URI preSignedUri = ParameterService.createPreSignedUri(queryParams, regionAlias, fileKey);
             String signature = HmacService.signPayload(preSignedUri.toString(), apiKey);
             String toURL = URLEncoder.encode(signature, StandardCharsets.UTF_8);
             String signedUrl = preSignedUri.toString() + "&signature=" + toURL;
             return new URI(signedUrl);
-        } catch (Exception e) {
+        } catch (URISyntaxException e) {
             throw new GenerateUrlException();
         }
     }

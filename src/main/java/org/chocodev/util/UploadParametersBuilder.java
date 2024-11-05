@@ -1,60 +1,63 @@
 package org.chocodev.util;
 
 import org.chocodev.core.UploadParameters;
+import org.chocodev.core.Exceptions.SDK.BadApiCallException;
+import org.chocodev.internal.Messages;
 import org.chocodev.util.Constants.Acl;
 import org.chocodev.util.Constants.ContentDisposition;
 
-public class UploadHandlerBuilder extends UploadParameters {
+public class UploadParametersBuilder extends UploadParameters {
 
-    private UploadHandlerBuilder() {
+    private UploadParametersBuilder() {
         super();
     }
 
-    public UploadHandlerBuilder setExpire(String exp) {
+    public UploadParametersBuilder setExpire(String exp) {
         this.query.put("expires", exp);
         return this;
     }
 
-    public UploadHandlerBuilder setAppId(String appId) {
+    public UploadParametersBuilder setAppId(String appId) {
         this.query.put("x-ut-identifier", appId);
         return this;
     }
 
-    public UploadHandlerBuilder setFileName(String fileName) {
+    public UploadParametersBuilder setFileName(String fileName) {
         this.query.put("x-ut-file-name", fileName);
         return this;
     }
 
-    public UploadHandlerBuilder setFileSize(long fileSize) {
+    public UploadParametersBuilder setFileSize(long fileSize) {
         this.query.put("x-ut-file-size", String.valueOf(fileSize));
         return this;
     }
 
-    public UploadHandlerBuilder setFileType(String fileType) {
+    public UploadParametersBuilder setFileType(String fileType) {
         this.query.put("x-ut-file-type", fileType);
         return this;
     }
 
-    public UploadHandlerBuilder setCustomId(String customId) {
+    public UploadParametersBuilder setCustomId(String customId) {
         this.query.put("x-ut-custom-id", customId);
         return this;
 
     }
 
-    public UploadHandlerBuilder setContentDisposition(ContentDisposition contentDisposition) {
+    public UploadParametersBuilder setContentDisposition(ContentDisposition contentDisposition) {
         this.query.put("x-ut-content-disposition", contentDisposition.getValue());
         return this;
 
     }
 
-    UploadHandlerBuilder setACL(Acl acl) {
+    UploadParametersBuilder setACL(Acl acl) {
         this.query.put("x-ut-acl", acl.getValue());
         return this;
 
     }
 
-    public static UploadHandlerBuilder builder(String fileName, long fileSize, String appId) {
-        UploadHandlerBuilder builder = new UploadHandlerBuilder()
+    public static UploadParametersBuilder builder(String fileName, long fileSize, String appId) {
+        ParametersValidator.validate(new BadApiCallException(Messages.BAD_BUILDER_BUILD), fileName, fileSize, appId);
+        UploadParametersBuilder builder = new UploadParametersBuilder()
                 .setAppId(appId)
                 .setFileName(fileName)
                 .setFileSize(fileSize)
