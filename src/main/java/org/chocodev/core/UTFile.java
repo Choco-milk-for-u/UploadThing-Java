@@ -1,7 +1,16 @@
 package org.chocodev.core;
 
+import org.chocodev.core.Exceptions.SDK.BadApiCallException;
+import org.chocodev.internal.Messages;
+import org.chocodev.util.ParametersValidator;
+
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 public class UTFile {
+    @NotEmpty
     private String name;
+    @NotNull
     private byte[] data;
     private long size;
     private long lastModified;
@@ -39,6 +48,7 @@ public class UTFile {
         }
 
         public UTFile build() {
+            ParametersValidator.validate(new BadApiCallException(Messages.BAD_BUILDER_BUILD), File);
             return File;
         }
         public Bulder setLastModified(long lastModified) {

@@ -75,7 +75,7 @@ public class FileKey {
 
         public FileKey build() {
             if (Key.fileBasics.isEmpty() && Key.fileObjects.isEmpty()) {
-                throw new BadApiCallException(Messages.badBuilderBuildErrorMessage);
+                throw new BadApiCallException(Messages.BAD_BUILDER_BUILD);
             }
             return Key;
         }

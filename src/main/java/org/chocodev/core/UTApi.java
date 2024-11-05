@@ -8,14 +8,11 @@ import org.chocodev.internal.Messages;
 import org.chocodev.internal.Services.ServiceFactory;
 import org.chocodev.util.ParametersValidator;
 import org.chocodev.util.UploadHandler;
-import org.chocodev.util.UploadHandlerBuilder;
+import org.chocodev.util.UploadParametersBuilder;
 import org.chocodev.util.Decoder.DecodedToken;
 import org.chocodev.util.Decoder.UploadThingTokenDecoder;
-
 import okhttp3.OkHttpClient;
-
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class UTApi {
     private final OkHttpClient Client = new OkHttpClient();
@@ -33,7 +30,7 @@ public class UTApi {
     }
 
     public UTResponse<DeleteResponse> deleteFiles(FileKey File, DeleteOptions Options) {
-        ParametersValidator.validate(new FieldException(Messages.fieldErrorMessage), File, Options);
+        ParametersValidator.validate(new FieldException(Messages.FIELD_ERROR_MESSAGE), File, Options);
         return ServiceFactory.getDeleteService(File, Options).request(Client);
     }
 
@@ -41,14 +38,14 @@ public class UTApi {
         return deleteFiles(File, DeleteOptions.withDefault());
     }
 
-    public <TServerData> UTResponse<ArrayList<UTResponse<UploadResponse<TServerData>>>> uploadFiles(
+    public <TServerData> UTResponse<UploadResponse<TServerData>> uploadFiles(
             UploadParameters Parameters, UTFile... File) throws IOException, InterruptedException {
         return ServiceFactory.<TServerData>getUploadService(UploadHandler, Parameters, File).request(Client);
     }
 
-    public <TServerData> UTResponse<ArrayList<UTResponse<UploadResponse<TServerData>>>> uploadFiles(UTFile File)
+    public <TServerData> UTResponse<UploadResponse<TServerData>> uploadFiles(UTFile File)
             throws IOException, InterruptedException {
-        UploadParameters Parameters = UploadHandlerBuilder
+        UploadParameters Parameters = UploadParametersBuilder
                 .builder(File.getName(), File.getFileSize(), decodedToken.getAppId())
                 .build();
         return uploadFiles(Parameters, File);
