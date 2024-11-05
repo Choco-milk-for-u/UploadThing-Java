@@ -8,18 +8,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
-
-import java.net.URI;
-import java.net.http.HttpClient.Version;
-import java.net.http.HttpHeaders;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.Optional;
-
-import javax.net.ssl.SSLSession;
-
+import static org.mockito.Mockito.when;
 import org.chocodev.core.Exceptions.SDK.BadApiCallException;
 import org.junit.jupiter.api.Test;
+
+import okhttp3.Response;
 
 public class UTResponseTest {
     @Test
@@ -35,56 +28,10 @@ public class UTResponseTest {
     }
     @Test
     public void ResponseNormal(){
-        HttpResponse<String> response = new HttpResponse<String>() {
-
-            @Override
-            public int statusCode() {
-                return 200;
-            }
-
-            @Override
-            public HttpRequest request() {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'request'");
-            }
-
-            @Override
-            public Optional<HttpResponse<String>> previousResponse() {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'previousResponse'");
-            }
-
-            @Override
-            public HttpHeaders headers() {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'headers'");
-            }
-
-            @Override
-            public String body() {
-                return "result";
-            }
-
-            @Override
-            public Optional<SSLSession> sslSession() {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'sslSession'");
-            }
-
-            @Override
-            public URI uri() {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'uri'");
-            }
-
-            @Override
-            public Version version() {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'version'");
-            }
-            
-        };
-        UTResponse<String> Response = new UTResponse<>(response, "result");
+        Response response = mock(Response.class);
+        when(response.code()).thenReturn(200);
+        when(response.isSuccessful()).thenReturn(true);
+        UTResponse<String> Response = new UTResponse<String>(response, "result");
         assertFalse(Response.hasException());
         assertTrue(Response.isOk());
         assertNotNull(Response.getBody());
@@ -102,7 +49,7 @@ public class UTResponseTest {
     }
     @Test
     public void ResponseWithoutBody(){
-        HttpResponse<String> response = mock(HttpResponse.class);
+        Response response = mock(Response.class);
         assertThrows(BadApiCallException.class, ()->new UTResponse<>(response, null));
         assertThrows(BadApiCallException.class, ()->new UTResponse<>(response, ""));
 
