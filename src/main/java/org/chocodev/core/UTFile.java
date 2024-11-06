@@ -15,12 +15,15 @@ public class UTFile {
     private long size;
     private long lastModified;
     private String type;
+    private String customId;
 
     private UTFile(){}
     public String getName() {
         return this.name;
     }
-
+    public String getCustomId(){
+        return this.customId;
+    }
     public byte[] getBytes() {
         return this.data;
     }
@@ -36,7 +39,6 @@ public class UTFile {
     public long getLastModified() {
         return lastModified;
     }
-
     public static Bulder bulder() {
         return new Bulder();
     }
@@ -63,6 +65,11 @@ public class UTFile {
         }
         public Bulder setName(String name) {
             File.name = name;
+            return this;
+
+        }
+        public Bulder setCustomId(String customId) {
+            File.customId = customId;
             return this;
 
         }

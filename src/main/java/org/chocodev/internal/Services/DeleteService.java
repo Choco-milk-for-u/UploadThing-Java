@@ -15,19 +15,15 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class DeleteService implements IService<DeleteResponse> {
+public class DeleteService {
     private final String apiKey;
-    private final FileKey File;
-    private final DeleteOptions Options;
+    private final OkHttpClient Client;
 
-    public DeleteService(FileKey File, String utApiToken, DeleteOptions Options) {
-        this.apiKey = utApiToken;
-        this.File = File;
-        this.Options = Options;
+    public DeleteService(OkHttpClient Client, String apiKey) {
+        this.apiKey = apiKey;
+        this.Client = Client;
     }
-
-    @Override
-    public UTResponse<DeleteResponse> request(OkHttpClient Client) {
+    public UTResponse<DeleteResponse> request(FileKey File, DeleteOptions Options) {
         Request request = new Request.Builder().url(UTApiConfig.deleteFileUrl)
                 .header("X-Uploadthing-Api-Key", apiKey)
                 .post(RequestBody.create(Options.getRequestBody(File),
