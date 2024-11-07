@@ -1,4 +1,4 @@
-package org.chocodev.core.Options.DeleteOption;
+package org.chocodev.core.Options;
 
 import org.chocodev.util.Constants.Acl;
 import org.chocodev.util.Constants.ContentDisposition;

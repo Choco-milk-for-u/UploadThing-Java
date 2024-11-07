@@ -16,7 +16,7 @@ public class UTResponse<TRes> {
     private Exception exception = null;
 
     public UTResponse(Response response, TRes Body) {
-        ParametersValidator.validate(new BadApiCallException(Messages.badUTResponseConstructor), Body, response);
+        ParametersValidator.validate(new BadApiCallException(Messages.BAD_UT_RESPONSE_CONSTRUCTOR), Body, response);
         this.status = response.code();
         this.isOk = response.isSuccessful();
         this.body = Body;
@@ -27,7 +27,7 @@ public class UTResponse<TRes> {
     }
 
     public UTResponse(Exception e) {
-        ParametersValidator.validate(new BadApiCallException(Messages.badUTResponseConstructor), e);
+        ParametersValidator.validate(new BadApiCallException(Messages.BAD_UT_RESPONSE_CONSTRUCTOR), e);
         this.isError = true;
         this.exception = e;
     }

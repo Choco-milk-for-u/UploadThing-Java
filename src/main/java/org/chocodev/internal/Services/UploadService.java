@@ -8,6 +8,7 @@ import org.chocodev.core.UTFile;
 import org.chocodev.core.UTResponse;
 import org.chocodev.core.UploadParameters;
 import org.chocodev.core.Responses.UploadPerRequest;
+import org.chocodev.internal.RequestService;
 import org.chocodev.util.Mapper;
 import org.chocodev.util.UploadHandler;
 import org.chocodev.util.Decoder.DecodedToken;
@@ -31,11 +32,12 @@ public class UploadService {
 
     private <TServerData> UTResponse<UploadPerRequest<TServerData>> fetch(Request request, OkHttpClient Client) {
         try {
-            Response response = Client.newCall(request).execute();
+            Response response = RequestService.executeWithException(request, Client);
             UploadPerRequest<TServerData> Upload = Mapper.readValue(response.body().string(), UploadPerRequest.class);
             response.close();
             return new UTResponse<UploadPerRequest<TServerData>>(response, Upload);
         } catch (IOException e) {
+            System.out.println(e.getMessage());
             return new UTResponse<UploadPerRequest<TServerData>>(e);
         }
     }

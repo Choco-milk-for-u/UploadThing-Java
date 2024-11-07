@@ -1,8 +1,8 @@
 package org.chocodev.core;
 
 import org.chocodev.core.Exceptions.SDK.FieldException;
-import org.chocodev.core.Options.DeleteOption.DeleteOptions;
-import org.chocodev.core.Options.DeleteOption.UploadOptions;
+import org.chocodev.core.Options.DeleteOptions;
+import org.chocodev.core.Options.UploadOptions;
 import org.chocodev.core.Responses.DeleteResponse;
 import org.chocodev.core.Responses.UploadPerRequest;
 import org.chocodev.core.Responses.UploadResponse;

@@ -4,8 +4,9 @@ import java.io.IOException;
 
 import org.chocodev.core.FileKey;
 import org.chocodev.core.UTResponse;
-import org.chocodev.core.Options.DeleteOption.DeleteOptions;
+import org.chocodev.core.Options.DeleteOptions;
 import org.chocodev.core.Responses.DeleteResponse;
+import org.chocodev.internal.RequestService;
 import org.chocodev.internal.UTApiConfig;
 import org.chocodev.util.Mapper;
 
@@ -34,7 +35,7 @@ public class DeleteService {
 
     private UTResponse<DeleteResponse> sendRequest(Request request, OkHttpClient Client) {
         try {
-            Response response = Client.newCall(request).execute();
+            Response response = RequestService.executeWithException(request, Client);
             DeleteResponse DeleteResponse = Mapper.readValue(response.body().string(), DeleteResponse.class);
             response.close();
             return new UTResponse<DeleteResponse>(response, DeleteResponse);

@@ -48,7 +48,7 @@ public class FileKey {
     }
 
     private void addValidatedKey(List<String> keys, String key) {
-        ParametersValidator.validate(new BadApiCallException(Messages.emptyKeyErrorMessage), key);
+        ParametersValidator.validate(new BadApiCallException(Messages.EMPTY_KEY_ERROR_MESSAGE), key);
         keys.add(key);
     }
 

@@ -1,4 +1,4 @@
-package org.chocodev.core.Options.DeleteOption;
+package org.chocodev.core.Options;
 
 import java.util.Map;
 

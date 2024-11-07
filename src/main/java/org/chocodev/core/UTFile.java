@@ -12,9 +12,10 @@ public class UTFile {
     private String name;
     @NotNull
     private byte[] data;
+    @NotNull
     private long size;
-    private long lastModified;
-    private String type;
+    private long lastModified = System.currentTimeMillis();
+    private String type = "application/octet-stream";
     private String customId;
 
     private UTFile(){}

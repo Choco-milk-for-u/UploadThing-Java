@@ -13,7 +13,7 @@ public class Mapper {
         try {
             return objectMapper.readValue(body, valueType);
         } catch (JsonProcessingException e) {
-            throw new MapperException(Messages.mapperErrorMessage);
+            throw new MapperException(Messages.MAPPER_ERROR_MESSAGE);
         }
     }
 
@@ -21,7 +21,7 @@ public class Mapper {
         try {
             return objectMapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            throw new MapperException(Messages.mapperErrorMessage);
+            throw new MapperException(Messages.MAPPER_ERROR_MESSAGE);
         }
     }
 
