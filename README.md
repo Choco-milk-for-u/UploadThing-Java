@@ -8,8 +8,19 @@
 
 ## Instalation
 
-n
-
+maven
+```bash
+<dependency>
+    <groupId>org.chocodev.uploadthing</groupId>
+    <artifactId>core</artifactId>
+    <version>1.0</version> # please include latest version.
+</dependency>
+```
+gradle
+```bash
+implementation group: 'org.chocodev.uploadthing', name: 'core', version: '1.0'
+```
+or other methods, that can be found at [maven central](https://central.sonatype.com/artifact/org.chocodev.uploadthing/core/overview)
 ## Usage
 
 ```java
@@ -56,6 +67,7 @@ Every UTApi request returns a custom UTResponse object.
 #### uploade files
 
 Upload a file or files. You can also specify the type of some response data.
+_When uploading several files, the response body will contain the upload count. (count of only successfully uploaded files)_
 
 ```java
 UTResponse<UploadPerRequest<Long>> response = utApi.uploadFiles<Long>(File);
