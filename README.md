@@ -13,12 +13,12 @@ maven
 <dependency>
     <groupId>org.chocodev.uploadthing</groupId>
     <artifactId>core</artifactId>
-    <version>1.0</version> # please include latest version.
+    <version>1.0.1</version> # please include latest version.
 </dependency>
 ```
 gradle
 ```bash
-implementation group: 'org.chocodev.uploadthing', name: 'core', version: '1.0'
+implementation group: 'org.chocodev.uploadthing', name: 'core', version: '1.0.1'
 ```
 or other methods, that can be found at [maven central](https://central.sonatype.com/artifact/org.chocodev.uploadthing/core/overview)
 ## Usage
