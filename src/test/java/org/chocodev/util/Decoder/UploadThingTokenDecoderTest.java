@@ -5,7 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 
-import org.chocodev.api.Exceptions.SDK.BadApiCallException;
+import org.chocodev.uploadthing.core.api.Exceptions.SDK.BadApiCallException;
+import org.chocodev.uploadthing.core.util.Decoder.UploadThingTokenDecoder;
 import org.junit.jupiter.api.Test;
 
 public class UploadThingTokenDecoderTest {

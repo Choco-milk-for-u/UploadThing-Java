@@ -4,9 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import org.chocodev.api.Exceptions.SDK.BadApiCallException;
-import org.chocodev.api.File.IUTFile;
-import org.chocodev.util.Constants.KeyType;
+
+import org.chocodev.uploadthing.core.api.FileKey;
+import org.chocodev.uploadthing.core.api.Exceptions.SDK.BadApiCallException;
+import org.chocodev.uploadthing.core.api.File.IUTFile;
+import org.chocodev.uploadthing.core.util.Constants.KeyType;
 import org.junit.jupiter.api.Test;
 
 public class FileKeyTest {

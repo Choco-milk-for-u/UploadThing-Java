@@ -9,7 +9,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import org.chocodev.api.Exceptions.SDK.BadApiCallException;
+
+import org.chocodev.uploadthing.core.api.UTResponse;
+import org.chocodev.uploadthing.core.api.Exceptions.SDK.BadApiCallException;
 import org.junit.jupiter.api.Test;
 
 import okhttp3.Response;
