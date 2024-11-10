@@ -6,25 +6,30 @@ import org.chocodev.util.ParametersValidator;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 public class UTFile {
     @NotEmpty
     private String name;
     @NotNull
     private byte[] data;
-    @NotNull
+    @Positive
     private long size;
     private long lastModified = System.currentTimeMillis();
     private String type = "application/octet-stream";
     private String customId;
 
-    private UTFile(){}
+    private UTFile() {
+    }
+
     public String getName() {
         return this.name;
     }
-    public String getCustomId(){
+
+    public String getCustomId() {
         return this.customId;
     }
+
     public byte[] getBytes() {
         return this.data;
     }
@@ -40,6 +45,7 @@ public class UTFile {
     public long getLastModified() {
         return lastModified;
     }
+
     public static Bulder bulder() {
         return new Bulder();
     }
@@ -54,31 +60,37 @@ public class UTFile {
             ParametersValidator.validate(new BadApiCallException(Messages.BAD_BUILDER_BUILD), File);
             return File;
         }
+
         public Bulder setLastModified(long lastModified) {
             File.lastModified = lastModified;
             return this;
 
         }
+
         public Bulder setType(String type) {
             File.type = type;
             return this;
 
         }
+
         public Bulder setName(String name) {
             File.name = name;
             return this;
 
         }
+
         public Bulder setCustomId(String customId) {
             File.customId = customId;
             return this;
 
         }
+
         public Bulder setSize(long size) {
             File.size = size;
             return this;
 
         }
+
         public Bulder setBytes(byte[] bytes) {
             File.data = bytes;
             return this;
