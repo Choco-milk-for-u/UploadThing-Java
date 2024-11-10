@@ -1,8 +1,8 @@
 package org.chocodev.internal.Mappers;
 
-import org.chocodev.core.UTFile;
-import org.chocodev.core.UploadParameters;
-import org.chocodev.core.Options.UploadOptions;
+import org.chocodev.api.UTFile;
+import org.chocodev.api.UploadParameters;
+import org.chocodev.api.Options.UploadOptions;
 import org.chocodev.util.UploadParametersBuilder;
 
 public class UploadMapper {

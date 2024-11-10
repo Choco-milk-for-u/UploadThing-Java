@@ -4,7 +4,7 @@ import java.nio.charset.StandardCharsets;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.chocodev.core.Exceptions.SDK.SignedPayloadException;
+import org.chocodev.api.Exceptions.SDK.SignedPayloadException;
 
 public class HmacService {
     private final String ALG = "HmacSHA256";

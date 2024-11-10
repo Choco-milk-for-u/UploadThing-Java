@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.chocodev.core.Exceptions.SDK.FieldException;
+import org.chocodev.api.Exceptions.SDK.FieldException;
 import org.junit.jupiter.api.Test;
 
 public class UploadHandlerTest {

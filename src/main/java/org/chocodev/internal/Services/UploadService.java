@@ -3,11 +3,11 @@ package org.chocodev.internal.Services;
 import java.io.IOException;
 import java.net.URI;
 
-import org.chocodev.core.FileKey;
-import org.chocodev.core.UTFile;
-import org.chocodev.core.UTResponse;
-import org.chocodev.core.UploadParameters;
-import org.chocodev.core.Responses.UploadPerRequest;
+import org.chocodev.api.FileKey;
+import org.chocodev.api.UTFile;
+import org.chocodev.api.UTResponse;
+import org.chocodev.api.UploadParameters;
+import org.chocodev.api.Responses.UploadPerRequest;
 import org.chocodev.internal.RequestService;
 import org.chocodev.util.Mapper;
 import org.chocodev.util.UploadHandler;

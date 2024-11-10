@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 
-import org.chocodev.core.Exceptions.SDK.BadApiCallException;
+import org.chocodev.api.Exceptions.SDK.BadApiCallException;
 import org.junit.jupiter.api.Test;
 
 public class UploadThingTokenDecoderTest {
@@ -13,7 +13,7 @@ public class UploadThingTokenDecoderTest {
 
     @Test
     public void decodedTokenWithoutField() throws UnsupportedEncodingException {
-        String json = "{\"appId\": \"appId\"}";
+        String json = "{\"appId\": \"appId\", \"apiKey\": \"\", \"regions\":[\"regions\"]}";
         // Encode JSON string to Base64
         String base64Encoded = Base64.getEncoder().encodeToString(json.getBytes("UTF-8"));
         assertThrows(BadApiCallException.class, () -> decoder.decodedToken(base64Encoded));

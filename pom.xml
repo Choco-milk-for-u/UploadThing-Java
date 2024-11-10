@@ -3,10 +3,31 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>org.chocodev</groupId>
-    <artifactId>uploadthing-java</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <name>UploadThing Java SDK</name>
+    <description>Unofficial Java SDK for UploadThing.</description>
+    <url>https://github.com/Choco-milk-for-u/UploadThing-Java</url>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Aykhan Musayev</name>
+            <email>chocoantirus@gmail.com</email>
+            <organization>ChocoDev solutions</organization>
+            <organizationUrl>https://chocodev.org</organizationUrl>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:git://github.com/Choco-milk-for-u/UploadThing-Java.git</connection>
+        <developerConnection>scm:git:git://github.com/Choco-milk-for-u/UploadThing-Java.git</developerConnection>
+        <url>https://github.com/Choco-milk-for-u/UploadThing-Java</url>
+    </scm>
+    <groupId>org.chocodev.uploadthing</groupId>
+    <artifactId>core</artifactId>
+    <version>1.0</version>
     <properties>
         <maven.compiler.source>9</maven.compiler.source>
         <maven.compiler.target>9</maven.compiler.target>
@@ -44,6 +65,61 @@
             <artifactId>okhttp</artifactId>
             <version>4.12.0</version>
         </dependency>
-
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.6.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.11.1</version>
+                <configuration>
+                    <excludePackageNames>org.chocodev.internal</excludePackageNames>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>3.2.7</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

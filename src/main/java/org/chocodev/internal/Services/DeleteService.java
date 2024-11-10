@@ -2,10 +2,10 @@ package org.chocodev.internal.Services;
 
 import java.io.IOException;
 
-import org.chocodev.core.FileKey;
-import org.chocodev.core.UTResponse;
-import org.chocodev.core.Options.DeleteOptions;
-import org.chocodev.core.Responses.DeleteResponse;
+import org.chocodev.api.FileKey;
+import org.chocodev.api.UTResponse;
+import org.chocodev.api.Options.DeleteOptions;
+import org.chocodev.api.Responses.DeleteResponse;
 import org.chocodev.internal.RequestService;
 import org.chocodev.internal.UTApiConfig;
 import org.chocodev.util.Mapper;

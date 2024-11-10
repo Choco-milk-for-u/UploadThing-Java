@@ -3,7 +3,7 @@ package org.chocodev.util.Decoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-import org.chocodev.core.Exceptions.SDK.BadApiCallException;
+import org.chocodev.api.Exceptions.SDK.BadApiCallException;
 import org.chocodev.internal.Messages;
 import org.chocodev.util.Mapper;
 import org.chocodev.util.ParametersValidator;

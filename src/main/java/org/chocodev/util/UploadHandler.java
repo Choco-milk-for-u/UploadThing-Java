@@ -9,10 +9,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.chocodev.core.FileKey;
-import org.chocodev.core.UTFile;
-import org.chocodev.core.Exceptions.SDK.FieldException;
-import org.chocodev.core.Exceptions.SDK.GenerateUrlException;
+import org.chocodev.api.FileKey;
+import org.chocodev.api.UTFile;
+import org.chocodev.api.Exceptions.SDK.FieldException;
+import org.chocodev.api.Exceptions.SDK.GenerateUrlException;
 import org.chocodev.internal.Messages;
 import org.chocodev.internal.ParameterService;
 import org.sqids.Sqids;

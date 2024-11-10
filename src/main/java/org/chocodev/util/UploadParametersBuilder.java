@@ -1,7 +1,7 @@
 package org.chocodev.util;
 
-import org.chocodev.core.UploadParameters;
-import org.chocodev.core.Exceptions.SDK.BadApiCallException;
+import org.chocodev.api.UploadParameters;
+import org.chocodev.api.Exceptions.SDK.BadApiCallException;
 import org.chocodev.internal.Messages;
 import org.chocodev.util.Constants.Acl;
 import org.chocodev.util.Constants.ContentDisposition;
